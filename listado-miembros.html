@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de miembros</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Listado de miembros</h1>
+  </header>
+
+  <nav class="main-nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="registrar-miembro.html">Registrar miembro</a></li>
+      <li><a href="registrar-actividad.html">Registrar actividad</a></li>
+      <li><a href="listado-miembros.html" aria-current="page">Listado de miembros</a></li>
+      <li><a href="metricas.html">Metricas</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="card">
+      <h2>Filtros y orden</h2>
+      <div class="filters">
+        <label for="filtro-tipo">Tipo de miembro</label>
+        <select id="filtro-tipo">
+          <option value="todos">Todos</option>
+          <option value="pregrado">Pregrado</option>
+          <option value="postgrado">Postgrado</option>
+          <option value="funcionario">Funcionario(a)</option>
+          <option value="academico">Academico(a)</option>
+        </select>
+
+        <label for="ordenar-por">Ordenar por</label>
+        <select id="ordenar-por">
+          <option value="nombre">Nombre</option>
+          <option value="correo">Correo</option>
+          <option value="telefono">Telefono</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Resultados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-miembros"></tbody>
+      </table>
+
+      <div class="pagination">
+        <button id="prev-btn" type="button">Anterior</button>
+        <span id="page-info">Pagina 1</span>
+        <button id="next-btn" type="button">Siguiente</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/listado.js"></script>
+</body>
+</html>

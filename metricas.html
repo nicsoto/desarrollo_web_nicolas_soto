@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metricas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Metricas e indicadores</h1>
+  </header>
+
+  <nav class="main-nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="registrar-miembro.html">Registrar miembro</a></li>
+      <li><a href="registrar-actividad.html">Registrar actividad</a></li>
+      <li><a href="listado-miembros.html">Listado de miembros</a></li>
+      <li><a href="metricas.html" aria-current="page">Metricas</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="card">
+      <h2>Miembros por tipo</h2>
+      <div id="chart-miembros" class="chart"></div>
+    </section>
+
+    <section class="card">
+      <h2>Actividades por categoria</h2>
+      <div id="chart-actividades" class="chart"></div>
+    </section>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/metricas.js"></script>
+</body>
+</html>

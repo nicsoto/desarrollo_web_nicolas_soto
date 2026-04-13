@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar miembro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Registrar miembro de la comunidad</h1>
+  </header>
+
+  <nav class="main-nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="registrar-miembro.html" aria-current="page">Registrar miembro</a></li>
+      <li><a href="registrar-actividad.html">Registrar actividad</a></li>
+      <li><a href="listado-miembros.html">Listado de miembros</a></li>
+      <li><a href="metricas.html">Metricas</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="card">
+      <h2>Formulario</h2>
+      <p class="hint">Campos con * son obligatorios.</p>
+
+      <div id="val-box" class="alert" hidden>
+        <h3 id="val-title"></h3>
+        <ul id="val-list"></ul>
+      </div>
+
+      <form id="member-form" novalidate>
+        <label for="nombre">Nombre completo *</label>
+        <input id="nombre" name="nombre" type="text" placeholder="Ej: Ana Perez">
+
+        <label for="tipo">Tipo de miembro *</label>
+        <select id="tipo" name="tipo">
+          <option value="">Seleccione</option>
+          <option value="pregrado">Estudiante de pregrado</option>
+          <option value="postgrado">Estudiante de postgrado</option>
+          <option value="funcionario">Funcionario(a)</option>
+          <option value="academico">Academico(a)</option>
+        </select>
+
+        <label for="correo">Correo de contacto *</label>
+        <input id="correo" name="correo" type="email" placeholder="Ej: persona@uchile.cl">
+
+        <label for="telefono">Telefono de contacto *</label>
+        <input id="telefono" name="telefono" type="text" placeholder="Ej: 912345678">
+
+        <label for="unidad">Carrera / Programa / Unidad *</label>
+        <input id="unidad" name="unidad" type="text" placeholder="Ej: Ingenieria Civil en Computacion">
+
+        <label for="dato-especifico">Dato segun tipo *</label>
+        <input id="dato-especifico" name="dato-especifico" type="text" placeholder="Se ajusta automaticamente segun el tipo">
+
+        <label for="comentario">Comentario (opcional)</label>
+        <textarea id="comentario" name="comentario" rows="4" placeholder="Informacion adicional"></textarea>
+
+        <button id="member-submit" type="button">Validar registro</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/miembro.js"></script>
+</body>
+</html>

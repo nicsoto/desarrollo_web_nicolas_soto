@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar actividad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Registrar actividad</h1>
+  </header>
+
+  <nav class="main-nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="registrar-miembro.html">Registrar miembro</a></li>
+      <li><a href="registrar-actividad.html" aria-current="page">Registrar actividad</a></li>
+      <li><a href="listado-miembros.html">Listado de miembros</a></li>
+      <li><a href="metricas.html">Metricas</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="card">
+      <h2>Formulario de actividad</h2>
+      <p class="hint">Campos con * son obligatorios.</p>
+
+      <div id="val-box" class="alert" hidden>
+        <h3 id="val-title"></h3>
+        <ul id="val-list"></ul>
+      </div>
+
+      <form id="activity-form" novalidate>
+        <label for="nombre-miembro">Nombre del miembro *</label>
+        <input id="nombre-miembro" name="nombre-miembro" type="text" placeholder="Ej: Ana Perez">
+
+        <label for="tipo-actividad">Tipo de actividad *</label>
+        <select id="tipo-actividad" name="tipo-actividad">
+          <option value="">Seleccione</option>
+          <option value="artistica">Artistica</option>
+          <option value="deportiva">Deportiva</option>
+          <option value="tecnologica">Tecnologica</option>
+          <option value="social">Social</option>
+          <option value="recreativa">Recreativa</option>
+        </select>
+
+        <label for="nombre-actividad">Nombre de la actividad *</label>
+        <input id="nombre-actividad" name="nombre-actividad" type="text" placeholder="Ej: Taller de fotografia">
+
+        <fieldset>
+          <legend>Horarios dedicados * (al menos uno)</legend>
+          <div class="schedule-row">
+            <select class="dia">
+              <option value="">Dia</option>
+              <option value="lunes">Lunes</option>
+              <option value="martes">Martes</option>
+              <option value="miercoles">Miercoles</option>
+              <option value="jueves">Jueves</option>
+              <option value="viernes">Viernes</option>
+              <option value="sabado">Sabado</option>
+              <option value="domingo">Domingo</option>
+            </select>
+            <input class="hora-inicio" type="time">
+            <input class="hora-fin" type="time">
+          </div>
+          <div class="schedule-row">
+            <select class="dia">
+              <option value="">Dia</option>
+              <option value="lunes">Lunes</option>
+              <option value="martes">Martes</option>
+              <option value="miercoles">Miercoles</option>
+              <option value="jueves">Jueves</option>
+              <option value="viernes">Viernes</option>
+              <option value="sabado">Sabado</option>
+              <option value="domingo">Domingo</option>
+            </select>
+            <input class="hora-inicio" type="time">
+            <input class="hora-fin" type="time">
+          </div>
+        </fieldset>
+
+        <label for="archivos">Fotos o videos * (al menos 1 archivo)</label>
+        <input id="archivos" name="archivos" type="file" multiple accept="image/*,video/*">
+
+        <label for="enlace">Enlace a contenido propio *</label>
+        <input id="enlace" name="enlace" type="url" placeholder="Ej: https://misitio.cl/actividad">
+
+        <button id="activity-submit" type="button">Validar actividad</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/actividad.js"></script>
+</body>
+</html>
