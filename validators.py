@@ -20,7 +20,11 @@ def valid_phone(phone):
 
 
 def valid_time(value):
-    return re.match(r"^[0-9]{2}:[0-9]{2}$", value) is not None
+    if re.match(r"^[0-9]{2}:[0-9]{2}$", value) is None:
+        return False
+
+    hour, minute = value.split(":")
+    return 0 <= int(hour) <= 23 and 0 <= int(minute) <= 59
 
 
 def valid_url(value):
@@ -165,4 +169,3 @@ def validate_registration(form, files, session):
         "comuna_id": comuna_id_int,
         "activities": activities,
     }
-
