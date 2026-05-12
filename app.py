@@ -5,6 +5,7 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from database import get_session
 from models import Actividad, Comuna, Miembro, Region
+from validators import validate_registration
 
 
 app = Flask(__name__)
@@ -41,19 +42,22 @@ def index():
 @app.route("/registrar", methods=["GET", "POST"])
 def register():
     regions = []
+    errors = []
     session = get_session()
     try:
         stmt = select(Region).options(selectinload(Region.comunas)).order_by(Region.id)
         regions = session.scalars(stmt).all()
+
+        if request.method == "POST":
+            errors, data = validate_registration(request.form, request.files, session)
+            if not errors:
+                flash("formulario validado correctamente.")
     except SQLAlchemyError:
         flash("no se pudo cargar regiones y comunas.")
     finally:
         session.close()
 
-    if request.method == "POST":
-        flash("el guardado se agregara en el siguiente paso.")
-
-    return render_template("register.html", regions=regions)
+    return render_template("register.html", regions=regions, errors=errors)
 
 
 @app.route("/miembros")

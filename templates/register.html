@@ -7,6 +7,17 @@
     <h2>Registrar miembro y actividades</h2>
     <p class="hint">Campos con * son obligatorios.</p>
 
+    {% if errors %}
+      <div class="alert">
+        <h3>Se encontraron errores</h3>
+        <ul>
+          {% for error in errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
     <div id="val-box" class="alert" hidden>
       <h3 id="val-title"></h3>
       <ul id="val-list"></ul>
