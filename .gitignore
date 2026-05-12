@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+instance/
+static/uploads/*
+!static/uploads/.gitkeep
+*.zip
+apunte_completo_desarrollo_web_CC5002_actualizado.md
+
