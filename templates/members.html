@@ -11,7 +11,8 @@
           <th>Nombre</th>
           <th>Email</th>
           <th>Telefono</th>
-          <th>Comuna</th>
+          <th>Ubicacion</th>
+          <th>Registro</th>
         </tr>
       </thead>
       <tbody>
@@ -20,11 +21,12 @@
             <td><a href="{{ url_for('member_detail', member_id=member.id) }}">{{ member.nombre }}</a></td>
             <td>{{ member.email }}</td>
             <td>{{ member.telefono }}</td>
-            <td>{{ member.comuna.nombre }}</td>
+            <td>{{ member.comuna.nombre }}, {{ member.comuna.region.nombre }}</td>
+            <td>{{ member.fecha_registro.strftime("%d-%m-%Y %H:%M") }}</td>
           </tr>
         {% else %}
           <tr>
-            <td colspan="4">No hay miembros para mostrar.</td>
+            <td colspan="5">No hay miembros para mostrar.</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -34,11 +36,12 @@
       {% if has_prev %}
         <a class="button-link" href="{{ url_for('members', page=page - 1) }}">Anterior</a>
       {% endif %}
-      <span>Pagina {{ page }}</span>
+      <span>Pagina {{ page }} de {{ total_pages }}</span>
       {% if has_next %}
         <a class="button-link" href="{{ url_for('members', page=page + 1) }}">Siguiente</a>
       {% endif %}
     </div>
   </section>
-{% endblock %}
 
+  <script src="{{ url_for('static', filename='js/members.js') }}"></script>
+{% endblock %}

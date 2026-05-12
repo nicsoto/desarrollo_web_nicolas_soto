@@ -10,6 +10,7 @@
       <p><strong>Telefono:</strong> {{ member.telefono }}</p>
       <p><strong>Comuna:</strong> {{ member.comuna.nombre }}</p>
       <p><strong>Region:</strong> {{ member.comuna.region.nombre }}</p>
+      <p><strong>Registro:</strong> {{ member.fecha_registro.strftime("%d-%m-%Y %H:%M") }}</p>
     </section>
 
     <section class="card">
@@ -17,8 +18,21 @@
       {% for activity in member.actividades %}
         <article class="activity">
           <h3>{{ activity.nombre }}</h3>
-          <p>{{ activity.tipo }} - {{ activity.dia }} {{ activity.hora_inicio }}</p>
-          <p>{{ activity.descripcion or "Sin descripcion." }}</p>
+          <p><strong>Tipo:</strong> {{ activity.tipo }}</p>
+          <p><strong>Horario:</strong> {{ activity.dia }} {{ activity.hora_inicio }}</p>
+          <p><strong>Duracion:</strong> {{ activity.duracion }}</p>
+          <p class="description">{{ activity.descripcion or "Sin descripcion." }}</p>
+
+          <h4>Archivos</h4>
+          <ul class="file-list">
+            {% for photo in activity.fotos %}
+              <li>
+                <a href="{{ url_for('static', filename=photo.ruta_archivo) }}">{{ photo.nombre_archivo }}</a>
+              </li>
+            {% else %}
+              <li>No hay archivos registrados.</li>
+            {% endfor %}
+          </ul>
         </article>
       {% else %}
         <p>No hay actividades registradas.</p>
@@ -31,4 +45,3 @@
     </section>
   {% endif %}
 {% endblock %}
-

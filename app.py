@@ -117,6 +117,8 @@ def members():
     session = get_session()
     try:
         total = session.scalar(select(func.count()).select_from(Miembro)) or 0
+        total_pages = max(1, (total + PAGE_SIZE - 1) // PAGE_SIZE)
+        page = min(page, total_pages)
         stmt = (
             select(Miembro)
             .options(member_place())
@@ -127,6 +129,7 @@ def members():
         members_list = session.scalars(stmt).all()
     except SQLAlchemyError:
         flash("no se pudo cargar el listado.")
+        total_pages = 1
     finally:
         session.close()
 
@@ -134,6 +137,7 @@ def members():
         "members.html",
         members=members_list,
         page=page,
+        total_pages=total_pages,
         has_prev=page > 1,
         has_next=page * PAGE_SIZE < total,
     )
