@@ -7,4 +7,7 @@ static/uploads/*
 !static/uploads/.gitkeep
 *.zip
 apunte_completo_desarrollo_web_CC5002_actualizado.md
+extracted/
+tarea1/
+region_comuna.js
 
