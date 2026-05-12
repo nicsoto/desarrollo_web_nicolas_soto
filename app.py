@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload, selectinload
 
 from database import get_session
-from models import Actividad, Comuna, Miembro
+from models import Actividad, Comuna, Miembro, Region
 
 
 app = Flask(__name__)
@@ -36,6 +36,24 @@ def index():
         session.close()
 
     return render_template("index.html", members=members)
+
+
+@app.route("/registrar", methods=["GET", "POST"])
+def register():
+    regions = []
+    session = get_session()
+    try:
+        stmt = select(Region).options(selectinload(Region.comunas)).order_by(Region.id)
+        regions = session.scalars(stmt).all()
+    except SQLAlchemyError:
+        flash("no se pudo cargar regiones y comunas.")
+    finally:
+        session.close()
+
+    if request.method == "POST":
+        flash("el guardado se agregara en el siguiente paso.")
+
+    return render_template("register.html", regions=regions)
 
 
 @app.route("/miembros")
