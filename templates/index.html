@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h2>Bienvenida</h2>
+    <p>
+      Esta aplicacion permite registrar miembros de la comunidad y las actividades
+      que realizan fuera de sus obligaciones academicas o laborales.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Ultimos miembros agregados</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Comuna</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in members %}
+          <tr>
+            <td>{{ member.nombre }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.telefono }}</td>
+            <td>{{ member.comuna.nombre }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4">No hay miembros registrados.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}
+

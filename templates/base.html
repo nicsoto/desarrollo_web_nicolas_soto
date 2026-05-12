@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Tarea 2{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Comunidad DCC</h1>
+    <p>Registro de miembros y actividades.</p>
+  </header>
+
+  <nav class="main-nav" aria-label="Navegacion principal">
+    <ul>
+      <li><a href="{{ url_for('index') }}">Inicio</a></li>
+      <li><a href="{{ url_for('index') }}">Registrar miembro y actividades</a></li>
+      <li><a href="{{ url_for('members') }}">Listado de miembros</a></li>
+      <li><a href="{{ url_for('stats') }}">Estadisticas</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <section class="alert">
+          <h2>Mensaje</h2>
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
+
