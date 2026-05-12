@@ -134,6 +134,13 @@ td {
   text-decoration: none;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
 .activity {
   border-top: 1px solid #ddd;
   padding-top: 0.5rem;

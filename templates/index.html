@@ -9,6 +9,10 @@
       Esta aplicacion permite registrar miembros de la comunidad y las actividades
       que realizan fuera de sus obligaciones academicas o laborales.
     </p>
+    <div class="actions">
+      <a class="button-link" href="{{ url_for('register') }}">Registrar miembro y actividades</a>
+      <a class="button-link" href="{{ url_for('members') }}">Ver listado de miembros</a>
+    </div>
   </section>
 
   <section class="card">
@@ -19,24 +23,25 @@
           <th>Nombre</th>
           <th>Email</th>
           <th>Telefono</th>
-          <th>Comuna</th>
+          <th>Ubicacion</th>
+          <th>Registro</th>
         </tr>
       </thead>
       <tbody>
         {% for member in members %}
           <tr>
-            <td>{{ member.nombre }}</td>
+            <td><a href="{{ url_for('member_detail', member_id=member.id) }}">{{ member.nombre }}</a></td>
             <td>{{ member.email }}</td>
             <td>{{ member.telefono }}</td>
-            <td>{{ member.comuna.nombre }}</td>
+            <td>{{ member.comuna.nombre }}, {{ member.comuna.region.nombre }}</td>
+            <td>{{ member.fecha_registro.strftime("%d-%m-%Y %H:%M") }}</td>
           </tr>
         {% else %}
           <tr>
-            <td colspan="4">No hay miembros registrados.</td>
+            <td colspan="5">No hay miembros registrados.</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </section>
 {% endblock %}
-
