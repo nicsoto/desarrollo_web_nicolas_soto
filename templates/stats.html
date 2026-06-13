@@ -3,9 +3,33 @@
 {% block title %}Estadisticas{% endblock %}
 
 {% block content %}
-  <section class="card">
+  <section class="card" id="stats-root" data-stats-url="{{ url_for('stats_data') }}">
     <h2>Estadisticas</h2>
-    <p>Las estadisticas quedan pendientes para la siguiente tarea.</p>
-  </section>
-{% endblock %}
 
+    <div id="stats-message" class="alert" hidden>
+      <h3>Mensaje</h3>
+      <ul></ul>
+    </div>
+
+    <section class="chart-panel">
+      <h3>Miembros registrados por dia</h3>
+      <canvas id="members-line-chart" width="900" height="320"></canvas>
+    </section>
+
+    <section class="chart-panel">
+      <h3>Actividades por tipo</h3>
+      <canvas id="activities-pie-chart" width="900" height="320"></canvas>
+    </section>
+
+    <section class="chart-panel">
+      <h3>Actividades por comuna</h3>
+      <canvas id="activities-bar-chart" width="900" height="340"></canvas>
+    </section>
+
+    <div class="actions">
+      <a class="button-link" href="{{ url_for('index') }}">Volver a la portada</a>
+    </div>
+  </section>
+
+  <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
+{% endblock %}

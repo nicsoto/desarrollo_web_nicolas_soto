@@ -1,14 +1,14 @@
 from datetime import datetime
 
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload, selectinload
 
 from database import get_session
-from models import Actividad, Comuna, Foto, Miembro, Region
+from models import Actividad, Comentario, Comuna, Foto, Miembro, Region
 from storage import save_uploads
-from validators import validate_registration
+from validators import validate_comment, validate_registration
 
 
 app = Flask(__name__)
@@ -35,6 +35,15 @@ def make_description(data, activity):
         parts.append(activity["descripcion"])
 
     return "\n".join(parts)[:500]
+
+
+def serialize_comment(comment):
+    return {
+        "id": comment.id,
+        "fecha": comment.fecha.strftime("%d-%m-%Y %H:%M"),
+        "nombre": comment.nombre,
+        "texto": comment.texto,
+    }
 
 
 @app.route("/")
@@ -168,6 +177,98 @@ def member_detail(member_id):
 @app.route("/estadisticas")
 def stats():
     return render_template("stats.html")
+
+
+@app.route("/api/estadisticas")
+def stats_data():
+    session = get_session()
+    try:
+        registration_day = func.date(Miembro.fecha_registro)
+        members_stmt = (
+            select(registration_day.label("dia"), func.count(Miembro.id).label("total"))
+            .group_by(registration_day)
+            .order_by(registration_day)
+        )
+        members_by_day = [
+            {"dia": day.isoformat() if hasattr(day, "isoformat") else str(day), "total": int(total)}
+            for day, total in session.execute(members_stmt).all()
+        ]
+
+        activities_type_stmt = (
+            select(Actividad.tipo, func.count(Actividad.id).label("total"))
+            .group_by(Actividad.tipo)
+            .order_by(Actividad.tipo)
+        )
+        activities_by_type = [
+            {"tipo": activity_type, "total": int(total)}
+            for activity_type, total in session.execute(activities_type_stmt).all()
+        ]
+
+        activities_comuna_stmt = (
+            select(Comuna.nombre, func.count(Actividad.id).label("total"))
+            .join(Miembro, Miembro.comuna_id == Comuna.id)
+            .join(Actividad, Actividad.miembro_id == Miembro.id)
+            .group_by(Comuna.id, Comuna.nombre)
+            .order_by(Comuna.nombre)
+        )
+        activities_by_comuna = [
+            {"comuna": comuna, "total": int(total)}
+            for comuna, total in session.execute(activities_comuna_stmt).all()
+        ]
+
+        return jsonify(
+            {
+                "miembros_por_dia": members_by_day,
+                "actividades_por_tipo": activities_by_type,
+                "actividades_por_comuna": activities_by_comuna,
+            }
+        )
+    except SQLAlchemyError:
+        return jsonify({"error": "no se pudieron cargar las estadisticas."}), 500
+    finally:
+        session.close()
+
+
+@app.route("/api/actividades/<int:activity_id>/comentarios", methods=["GET", "POST"])
+def activity_comments(activity_id):
+    session = get_session()
+    try:
+        if request.method == "GET":
+            if session.get(Actividad, activity_id) is None:
+                return jsonify({"error": "actividad no encontrada."}), 404
+
+            stmt = (
+                select(Comentario)
+                .where(Comentario.actividad_id == activity_id)
+                .order_by(Comentario.fecha.asc())
+            )
+            comments = session.scalars(stmt).all()
+            return jsonify({"comentarios": [serialize_comment(comment) for comment in comments]})
+
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            payload = request.form
+
+        errors, data = validate_comment(payload, session, activity_id)
+        if errors:
+            return jsonify({"errors": errors}), 400
+
+        comment = Comentario(
+            nombre=data["nombre"],
+            texto=data["texto"],
+            fecha=datetime.now(),
+            actividad_id=activity_id,
+        )
+        session.add(comment)
+        session.flush()
+        serialized = serialize_comment(comment)
+        session.commit()
+        return jsonify({"comentario": serialized}), 201
+    except SQLAlchemyError:
+        session.rollback()
+        return jsonify({"error": "no se pudo procesar el comentario."}), 500
+    finally:
+        session.close()
 
 
 if __name__ == "__main__":

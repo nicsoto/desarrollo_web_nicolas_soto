@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
-from models import Comuna
+from models import Actividad, Comuna
 
 
 DAYS = {"lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"}
@@ -169,3 +169,21 @@ def validate_registration(form, files, session):
         "comuna_id": comuna_id_int,
         "activities": activities,
     }
+
+
+def validate_comment(payload, session, activity_id):
+    errors = []
+    name = (payload.get("nombre") or "").strip()
+    text = (payload.get("texto") or "").strip()
+    activity = session.get(Actividad, activity_id)
+
+    if len(name) < 3 or len(name) > 80:
+        errors.append("nombre debe tener entre 3 y 80 caracteres.")
+    if len(text) < 5:
+        errors.append("comentario debe tener al menos 5 caracteres.")
+    if len(text) > 300:
+        errors.append("comentario no puede superar los 300 caracteres.")
+    if activity is None:
+        errors.append("actividad no encontrada.")
+
+    return errors, {"nombre": name, "texto": text, "activity": activity}

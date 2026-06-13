@@ -33,6 +33,41 @@
               <li>No hay archivos registrados.</li>
             {% endfor %}
           </ul>
+
+          <section class="comments-panel" data-comments-url="{{ url_for('activity_comments', activity_id=activity.id) }}">
+            <h4>Comentarios</h4>
+
+            <div class="alert comment-message" hidden>
+              <h5>Mensaje</h5>
+              <ul></ul>
+            </div>
+
+            <form class="comment-form" novalidate>
+              <label for="comment-name-{{ activity.id }}">Nombre comentarista *</label>
+              <input id="comment-name-{{ activity.id }}" name="nombre" type="text" minlength="3" maxlength="80">
+
+              <label for="comment-text-{{ activity.id }}">Comentario *</label>
+              <textarea id="comment-text-{{ activity.id }}" name="texto" rows="4" cols="50" minlength="5" maxlength="300"></textarea>
+
+              <button type="submit">Agregar comentario</button>
+            </form>
+
+            <table class="comments-table">
+              <caption>Comentarios asociados</caption>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Nombre comentarista</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody class="comments-body">
+                <tr>
+                  <td colspan="3">Cargando comentarios.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
         </article>
       {% else %}
         <p>No hay actividades registradas.</p>
@@ -44,4 +79,6 @@
       <p>No fue posible encontrar el miembro solicitado.</p>
     </section>
   {% endif %}
+
+  <script src="{{ url_for('static', filename='js/comments.js') }}"></script>
 {% endblock %}

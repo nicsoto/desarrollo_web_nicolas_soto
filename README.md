@@ -1,23 +1,15 @@
-# CC5002 - Tarea 2
+# CC5002 - Tarea 3
 
-Aplicacion Flask para registrar miembros de la comunidad DCC y las actividades que realizan.
+Aplicacion Flask para registrar miembros de la comunidad DCC, sus actividades, comentarios asociados y estadisticas.
 
 ## Requisitos
 
 - Python 3
 - MySQL
 - Base de datos `tarea2`
-- Usuario `cc5002`
-- Password `programacionweb`
+- Usuario local de MySQL para la aplicacion, por defecto `cc5002`
 
 ## Instalacion
-
-Crear y cargar la base de datos:
-
-```bash
-mysql -u cc5002 -p < sql/tarea2.sql
-mysql -u cc5002 -p tarea2 < sql/region-comuna.sql
-```
 
 Instalar dependencias:
 
@@ -25,13 +17,31 @@ Instalar dependencias:
 pip install -r requirements.txt
 ```
 
+Crear usuario, iniciar MariaDB y cargar la base de datos:
+
+```bash
+bash scripts/setup-db.sh
+```
+
+El script pedira la clave de `sudo` para iniciar MariaDB y una clave para el usuario local de
+MySQL que usara la aplicacion. Luego carga:
+
+- `sql/tarea2.sql`
+- `sql/region-comuna.sql`
+- `sql/tabla-comentario.sql`
+
 Ejecutar:
 
 ```bash
+export DB_PASSWORD="clave_que_usaste_en_setup"
 python app.py
 ```
 
 La aplicacion queda disponible en `http://127.0.0.1:5000`.
+
+Por defecto la aplicacion usa `DB_USER=cc5002`, `DB_HOST=localhost`, `DB_PORT=3306` y
+`DB_NAME=tarea2`. Si necesita otra conexion, puede definir esas variables o definir
+`DATABASE_URL` antes de ejecutar Flask.
 
 ## Decisiones
 
@@ -40,5 +50,20 @@ La aplicacion queda disponible en `http://127.0.0.1:5000`.
 - El formulario mantiene validaciones en JavaScript y tambien valida en Flask antes de guardar.
 - Los archivos subidos se guardan en `static/uploads` y en la base de datos se guarda su ruta.
 - Los campos extra de la tarea 1 se guardan dentro de la descripcion de la actividad para no cambiar el modelo entregado.
-- Las estadisticas quedan como pagina pendiente, tal como indica el enunciado.
+- La tabla `comentario` se crea con `sql/tabla-comentario.sql`, que corresponde al script adjunto al enunciado.
+- Los comentarios se listan y agregan con llamadas asincronas `fetch` a `/api/actividades/<id>/comentarios`.
+- Las estadisticas se obtienen con `fetch` desde `/api/estadisticas`.
+- Los graficos se dibujan con JavaScript puro sobre `canvas`, sin bibliotecas externas.
 
+## Solucion de problemas
+
+Si aparece un mensaje como `no se pudo cargar la base de datos`, `no se pudo cargar el listado`,
+`no se pudo completar la operacion` o `no se pudieron cargar las estadisticas`, la aplicacion no
+esta pudiendo consultar MySQL. Revise que el servicio MariaDB/MySQL este activo, que exista la base
+`tarea2`, que se hayan cargado los tres scripts SQL y que el usuario/clave coincidan con
+`database.py` o con la variable `DATABASE_URL`. En un entorno local nuevo, ejecute:
+
+```bash
+bash scripts/setup-db.sh
+export DB_PASSWORD="clave_que_usaste_en_setup"
+```
